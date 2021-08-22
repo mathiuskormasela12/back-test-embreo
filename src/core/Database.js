@@ -71,6 +71,7 @@ class Database {
 
                   CREATE TABLE IF NOT EXISTS events (
                      id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
+                     event_name varchar(255) NOT NULL,
                      company_id int NOT NULL,
                      vendor_id int NOT NULL,
                      date_event int NOT NULL,
