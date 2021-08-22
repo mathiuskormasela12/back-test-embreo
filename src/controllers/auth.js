@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
     })
 
     if (isExist.length < 1 || !(await bcrypt.compare(password, isExist[0].password))) {
-      return response(req, res, 400, false, 'Username already in used')
+      return response(req, res, 400, false, 'Wrong username or password')
     } else {
       const token = jwt.sign({
         id: isExist[0].id,

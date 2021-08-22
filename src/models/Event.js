@@ -1,8 +1,8 @@
-// ========== User Model
+// ========== Event Model
 // import all modules
 const Database = require('../core/Database')
 
-class User extends Database {
+class Event extends Database {
   constructor (table) {
     super()
     this.table = table
@@ -35,13 +35,26 @@ class User extends Database {
         } else {
           return resolve({
             id: results.insertId,
-            ...data,
-            password: undefined
+            ...data
           })
+        }
+      })
+    })
+  }
+
+  buklCreate (data) {
+    const sql = `INSERT INTO ${this.table}(${Object.keys(data).map(item => item).join(', ')}) VALUES${data.date_event.map((item, index) => `(${Object.values(data).map(item => `'${Array.isArray(item) ? item[index] : item}'`)})`)}`
+    console.log(sql)
+    return new Promise((resolve, reject) => {
+      this.getDatabase().query(sql, data, (err, results) => {
+        if (err) {
+          return reject(err)
+        } else {
+          return resolve(true)
         }
       })
     })
   }
 }
 
-module.exports = new User('users')
+module.exports = new Event('events')

@@ -17,6 +17,13 @@ class Database {
   async sync () {
     try {
       const message = await this.createDatabase()
+      this.database = mysql.createConnection({
+        host: config.database.host,
+        user: config.database.user,
+        password: config.database.password,
+        database: config.database.database,
+        multipleStatements: true
+      })
       console.log(message)
       try {
         const message = await this.createTables()
@@ -37,13 +44,6 @@ class Database {
         if (err) {
           return reject(err)
         } else {
-          this.database = mysql.createConnection({
-            host: config.database.host,
-            user: config.database.user,
-            password: config.database.password,
-            database: config.database.database,
-            multipleStatements: true
-          })
           return resolve('Database has been created')
         }
       })
@@ -96,7 +96,7 @@ class Database {
   }
 
   getDatabase () {
-    this.database = mysql.createConnection({
+    return mysql.createConnection({
       host: config.database.host,
       user: config.database.user,
       password: config.database.password,

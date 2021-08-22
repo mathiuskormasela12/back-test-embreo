@@ -38,6 +38,7 @@ const db = new Database()
 db.sync()
 
 app.use('/api/v1', require('./src/routes/auth'))
+app.use('/api/v1', require('./src/routes/event'))
 
 app.listen(config.port, () => {
   console.log(`Web services running at ${config.app_url}`)
