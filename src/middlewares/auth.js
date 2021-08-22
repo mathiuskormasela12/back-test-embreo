@@ -91,3 +91,20 @@ exports.isVendor = (req, res, next) => {
     return response(req, res, 403, false, 'Forbidden')
   }
 }
+
+exports.isLogin = (req, res, next) => {
+  const token = req.headers.authorization
+
+  if (token) {
+    jwt.verify(token, config.secret_key, (err, decode) => {
+      if (err) {
+        return response(req, res, 400, false, err.message)
+      } else {
+        req.data = decode
+        return next()
+      }
+    })
+  } else {
+    return response(req, res, 403, false, 'Forbidden')
+  }
+}

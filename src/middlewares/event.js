@@ -6,8 +6,6 @@ const response = require('../helpers/response')
 exports.checkCreateEventForm = [
   body('event_name', "event_name can't be empty")
     .notEmpty(),
-  body('company_id', "company_id can't be empty")
-    .notEmpty(),
   body('vendor_id', "vendor_id can't be empty")
     .notEmpty(),
   body('date_event', "date_event can't be empty")

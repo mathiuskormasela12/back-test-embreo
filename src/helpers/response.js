@@ -17,7 +17,7 @@ module.exports = (req, res, status, success, message, results, totalPages, total
         nextPage: (currentPage < totalPages) ? `${config.app_url}${req.path}${req.query ? `?${Object.keys(req.query).map((item, index) => `${item}=${item === 'page' ? `${Number(Object.values(req.query)[index]) + 1}` : Object.values(req.query)[index]}`).join('&')}` : ''}` : null
       }
     })
-  } else if (results && !Array.isArray(results)) {
+  } else if (results) {
     return res.status(status).json({
       message,
       status,

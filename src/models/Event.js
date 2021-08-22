@@ -8,9 +8,61 @@ class Event extends Database {
     this.table = table
   }
 
+  findAllWithRelation (conditions, operator = '') {
+    const sql = `
+                  SELECT
+                  e.id,
+                  e.vendor_id,
+                  e.company_id,
+                  e.event_name,
+                  v.name as vendor_name,
+                  e.updated_at as comfirmed_date,
+                  e.status,
+                  e.created_at as date_created
+                  FROM ${this.table} e 
+                  INNER JOIN users c ON c.id = e.company_id
+                  INNER JOIN users v ON v.id = e.vendor_id
+                  INNER JOIN date_events de on de.id = e.date_event
+                  ${conditions ? `WHERE ${Object.keys(conditions).map((item, index) => `${item} = '${Object.values(conditions)[index]}'`).join(` ${operator} `)}` : ''};
+                `
+
+    return new Promise((resolve, reject) => {
+      this.getDatabase().query(sql, (err, results) => {
+        if (err) {
+          return reject(err)
+        } else {
+          return resolve(results)
+        }
+      })
+    })
+  }
+
   findAll (conditions, operator = '') {
     const sql = `
                   SELECT * FROM ${this.table} 
+                  ${conditions && `WHERE ${Object.keys(conditions).map((item, index) => `${item} = '${Object.values(conditions)[index]}'`).join(` ${operator} `)}`}
+                `
+
+    return new Promise((resolve, reject) => {
+      this.getDatabase().query(sql, (err, results) => {
+        if (err) {
+          return reject(err)
+        } else {
+          return resolve(results)
+        }
+      })
+    })
+  }
+
+  findDateEvent (conditions, operator = '') {
+    const sql = `
+                  SELECT 
+                  e.id AS id_event,  
+                  e.status,
+                  de.id AS id_date_event, 
+                  de.date 
+                  FROM ${this.table} e
+                  INNER JOIN date_events de ON de.id = e.date_event 
                   ${conditions && `WHERE ${Object.keys(conditions).map((item, index) => `${item} = '${Object.values(conditions)[index]}'`).join(` ${operator} `)}`}
                 `
 
