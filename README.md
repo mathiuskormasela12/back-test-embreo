@@ -21,7 +21,7 @@ A web application that will facilitate the online booking of wellness events (he
 
 ## Entity Relationship Diagram (ERD)
 
-![alt text](https://github.com/mathiuskormasela12/back-test-embreo/blob/staging/screenshoot/ERD.png?raw=true)
+![alt text](https://github.com/mathiuskormasela12/back-test-embreo/blob/main/screenshoot/ERD.png?raw=true)
 
 ## API SPECS
 
