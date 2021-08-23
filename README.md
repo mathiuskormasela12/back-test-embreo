@@ -13,11 +13,12 @@ A web application that will facilitate the online booking of wellness events (he
 	npm install
 	```
 
-## How To Run This Web Service
+	and then
 
 	```bash
 	npm start
 	```
+
 ## API SPECS
 
 - POST `/api/v1/auth/register` Route for register new user
