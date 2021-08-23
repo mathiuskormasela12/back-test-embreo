@@ -15,6 +15,7 @@ class Event extends Database {
                   e.vendor_id,
                   e.company_id,
                   e.event_name,
+                  e.location,
                   v.name as vendor_name,
                   e.updated_at as comfirmed_date,
                   e.created_at as date_created
@@ -57,7 +58,8 @@ class Event extends Database {
     const sql = `
                   SELECT 
                   e.id AS id_event, 
-                  de.id AS id_date_event, 
+                  de.id AS id_date_event,
+                  e.location, 
                   de.date,
                   de.status
                   FROM ${this.table} e

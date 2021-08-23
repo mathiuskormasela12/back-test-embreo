@@ -68,6 +68,7 @@ class Database {
                     company_id int NOT NULL,
                     vendor_id int NOT NULL,
                     rejection_reason TEXT,
+                    location TEXT,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
                     updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     FOREIGN KEY (vendor_id) REFERENCES users(id),

@@ -10,6 +10,8 @@ exports.checkCreateEventForm = [
     .notEmpty(),
   body('date_event', "date_event can't be empty")
     .notEmpty(),
+  body('location', "location can't be empty")
+    .notEmpty(),
   body('date_event', 'You must select 3 proposed dates')
     .isArray({
       min: 3,

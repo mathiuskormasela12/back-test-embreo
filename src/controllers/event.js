@@ -20,7 +20,8 @@ exports.createEvent = async (req, res) => {
       const data = {
         event_name: req.body.event_name,
         vendor_id: req.body.vendor_id,
-        company_id: req.data.id
+        company_id: req.data.id,
+        location: req.body.location
       }
 
       const { id } = await events.create(data)

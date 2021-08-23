@@ -53,6 +53,7 @@ A web application that will facilitate the online booking of wellness events (he
 	```
 	{
 		"event_name": "event name",
+		"location": "event location",
 		"vendor_id": "vendor id",
 		"date_event": [
 			"proposed date",
