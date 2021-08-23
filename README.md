@@ -75,6 +75,3 @@ A web application that will facilitate the online booking of wellness events (he
 	```
 
 - PATCH `/api/v1/event/reject/:id` Route for reject an event
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
