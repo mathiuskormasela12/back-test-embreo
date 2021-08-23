@@ -144,7 +144,7 @@ exports.getAllEvent = async (req, res) => {
           date_created: moment(item.date_created).format('DD MMMM YYYY')
         }))
 
-        return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults[0])
+        return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults)
       } catch (err) {
         console.log(err)
         return response(req, res, 500, false, err.message)
