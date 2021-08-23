@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
         expiresIn: '24h'
       })
 
-      return response(req, res, 200, true, 'Login successfulyy', { token })
+      return response(req, res, 200, true, 'Login successfully', { token })
     }
   } catch (err) {
     return response(req, res, 500, false, err.message)
