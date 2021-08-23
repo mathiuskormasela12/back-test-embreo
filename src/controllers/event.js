@@ -101,7 +101,7 @@ exports.approveEvent = async (req, res) => {
         id: req.body.date_event,
         id_event: id
       }, 'AND', {
-        status: 'approve'
+        status: 'approved'
       })
 
       return response(req, res, 200, true, 'The event was successfully approve')
@@ -126,29 +126,19 @@ exports.getAllEvent = async (req, res) => {
         return response(req, res, 400, false, 'no events available')
       }
 
-      try {
-        const dateEvent = await events.findDateEvent({
-          'e.company_id': results[0].company_id,
-          'e.vendor_id': results[0].vendor_id
-        }, 'AND')
+      const modifiedResults = results.map(item => ({
+        ...item,
+        status: undefined,
+        rejected_date: moment(item.rejected_date).format('DD MMMM YYYY'),
+        date_event: item.date.split(',').map((date, index) => ({
+          id_date_event: item.id_date_event.split(',')[index],
+          date: moment(date).format('DD MMMM YYYY'),
+          status: item.status.split(',')[index]
+        })),
+        date_created: moment(item.date_created).format('DD MMMM YYYY')
+      }))
 
-        const modifiedResults = results.map(item => ({
-          ...item,
-          status: undefined,
-          comfirmed_date: moment(item.comfirmed_date).format('DD MMMM YYYY'),
-          date_event: dateEvent.map(date => ({
-            id_date_event: date.id_date_event,
-            date: moment(date.date).format('DD MMMM YYYY'),
-            status: date.status
-          })),
-          date_created: moment(item.date_created).format('DD MMMM YYYY')
-        }))
-
-        return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults)
-      } catch (err) {
-        console.log(err)
-        return response(req, res, 500, false, err.message)
-      }
+      return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults)
     } catch (err) {
       console.log(err)
       return response(req, res, 500, false, err.message)
@@ -163,29 +153,19 @@ exports.getAllEvent = async (req, res) => {
         return response(req, res, 400, false, 'no events available')
       }
 
-      try {
-        const dateEvent = await events.findDateEvent({
-          'e.company_id': results[0].company_id,
-          'e.vendor_id': results[0].vendor_id
-        }, 'AND')
+      const modifiedResults = results.map(item => ({
+        ...item,
+        status: undefined,
+        rejected_date: moment(item.rejected_date).format('DD MMMM YYYY'),
+        date_event: item.date.split(',').map((date, index) => ({
+          id_date_event: item.id_date_event.split(',')[index],
+          date: moment(date).format('DD MMMM YYYY'),
+          status: item.status.split(',')[index]
+        })),
+        date_created: moment(item.date_created).format('DD MMMM YYYY')
+      }))
 
-        const modifiedResults = results.map(item => ({
-          ...item,
-          status: undefined,
-          comfirmed_date: moment(item.comfirmed_date).format('DD MMMM YYYY'),
-          date_event: dateEvent.map(date => ({
-            id_date_event: date.id_date_event,
-            date: moment(date.date).format('DD MMMM YYYY'),
-            status: date.status
-          })),
-          date_created: moment(item.date_created).format('DD MMMM YYYY')
-        }))
-
-        return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults[0])
-      } catch (err) {
-        console.log(err)
-        return response(req, res, 500, false, err.message)
-      }
+      return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults)
     } catch (err) {
       console.log(err)
       return response(req, res, 500, false, err.message)
@@ -203,29 +183,19 @@ exports.getAllEventDetail = async (req, res) => {
       return response(req, res, 400, false, 'no events available')
     }
 
-    try {
-      const dateEvent = await events.findDateEvent({
-        'e.company_id': results[0].company_id,
-        'e.vendor_id': results[0].vendor_id
-      }, 'AND')
+    const modifiedResults = results.map(item => ({
+      ...item,
+      status: undefined,
+      rejected_date: moment(item.rejected_date).format('DD MMMM YYYY'),
+      date_event: item.date.split(',').map((date, index) => ({
+        id_date_event: item.id_date_event.split(',')[index],
+        date: moment(date).format('DD MMMM YYYY'),
+        status: item.status.split(',')[index]
+      })),
+      date_created: moment(item.date_created).format('DD MMMM YYYY')
+    }))
 
-      const modifiedResults = results.map(item => ({
-        ...item,
-        status: undefined,
-        comfirmed_date: moment(item.comfirmed_date).format('DD MMMM YYYY'),
-        date_event: dateEvent.map(date => ({
-          id_date_event: date.id_date_event,
-          date: moment(date.date).format('DD MMMM YYYY'),
-          status: date.status
-        })),
-        date_created: moment(item.date_created).format('DD MMMM YYYY')
-      }))
-
-      return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults[0])
-    } catch (err) {
-      console.log(err)
-      return response(req, res, 500, false, err.message)
-    }
+    return response(req, res, 200, true, 'Sucessfully to get all events', modifiedResults[0])
   } catch (err) {
     console.log(err)
     return response(req, res, 500, false, err.message)

@@ -17,8 +17,11 @@ class Event extends Database {
                   e.event_name,
                   e.location,
                   v.name as vendor_name,
-                  e.updated_at as comfirmed_date,
-                  e.created_at as date_created
+                  e.updated_at as confirmed_date,
+                  e.created_at as date_created,
+                  GROUP_CONCAT(de.id) AS id_date_event,
+                  GROUP_CONCAT(de.status) AS status,
+                  GROUP_CONCAT(de.date) as date
                   FROM ${this.table} e 
                   INNER JOIN users c ON c.id = e.company_id
                   INNER JOIN users v ON v.id = e.vendor_id
