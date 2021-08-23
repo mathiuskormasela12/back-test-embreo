@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
         role: isExist[0].role,
         username: isExist[0].username
       }, config.secret_key, {
-        expiresIn: '1h'
+        expiresIn: '24h'
       })
 
       return response(req, res, 200, true, 'Login successfulyy', { token })
