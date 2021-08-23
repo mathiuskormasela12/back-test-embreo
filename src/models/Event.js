@@ -23,7 +23,8 @@ class Event extends Database {
                   INNER JOIN users c ON c.id = e.company_id
                   INNER JOIN users v ON v.id = e.vendor_id
                   INNER JOIN date_events de on de.id_event = e.id
-                  ${conditions ? `WHERE ${Object.keys(conditions).map((item, index) => `${item} = '${Object.values(conditions)[index]}'`).join(` ${operator} `)}` : ''};
+                  ${conditions ? `WHERE ${Object.keys(conditions).map((item, index) => `${item} = '${Object.values(conditions)[index]}'`).join(` ${operator} `)}` : ''}
+                  GROUP BY e.id;
                 `
 
     return new Promise((resolve, reject) => {
