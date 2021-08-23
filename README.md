@@ -19,7 +19,7 @@ A web application that will facilitate the online booking of wellness events (he
 	npm start
 	```
 
-## ERD
+## Entity Relationship Diagram (ERD)
 
 ![alt text](https://github.com/mathiuskormasela12/back-test-embreo/blob/staging/screenshoot/ERD.png?raw=true)
 
