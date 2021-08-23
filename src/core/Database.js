@@ -62,26 +62,26 @@ class Database {
                      updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                   );
 
-                  CREATE TABLE IF NOT EXISTS date_events (
-                     id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
-                     date Date NOT NULL,
-                     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                     updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                  CREATE TABLE IF NOT EXISTS events (
+                    id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
+                    event_name varchar(255) NOT NULL,
+                    company_id int NOT NULL,
+                    vendor_id int NOT NULL,
+                    rejection_reason TEXT,
+                    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                    updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (vendor_id) REFERENCES users(id),
+                    FOREIGN KEY (company_id) REFERENCES users(id)
                   );
 
-                  CREATE TABLE IF NOT EXISTS events (
+                  CREATE TABLE IF NOT EXISTS date_events (
                      id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
-                     event_name varchar(255) NOT NULL,
-                     company_id int NOT NULL,
-                     vendor_id int NOT NULL,
-                     date_event int NOT NULL,
+                     id_event int NOT NULL,
+                     date Date NOT NULL,
                      status varchar(100) NOT NULL,
-                     rejection_reason TEXT,
                      created_at timestamp DEFAULT CURRENT_TIMESTAMP,
                      updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                     FOREIGN KEY (date_event) REFERENCES date_events(id),
-                     FOREIGN KEY (vendor_id) REFERENCES users(id),
-                     FOREIGN KEY (company_id) REFERENCES users(id)
+                     FOREIGN KEY (id_event) REFERENCES events(id)
                   );
                 `
 

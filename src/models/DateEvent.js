@@ -43,13 +43,28 @@ class DateEvent extends Database {
   }
 
   buklCreate (data) {
-    const sql = `INSERT INTO ${this.table}(date) VALUES${data.map(item => `('${item}')`).join(', ')}`
+    const sql = `INSERT INTO ${this.table}(${Object.keys(data).map(field => `${field}`).join(', ')}) VALUES${data.date.map((item, index) => `(${(typeof (item) === 'object') ? `'${data.id_event}','${item[index]}', '${data.status}'` : `'${data.id_event}','${item}', '${data.status}'`})`).join(', ')}`
+
     return new Promise((resolve, reject) => {
       this.getDatabase().query(sql, data, (err, results) => {
         if (err) {
           return reject(err)
         } else {
           return resolve(results)
+        }
+      })
+    })
+  }
+
+  update (condition, operator, data) {
+    const sql = `UPDATE ${this.table} SET ? ${condition && `WHERE ${Object.keys(condition).map((item, index) => `${item} = '${Object.values(condition)[index]}'`).join(` ${operator} `)}`}`
+
+    return new Promise((resolve, reject) => {
+      this.getDatabase().query(sql, data, (err, results) => {
+        if (err) {
+          return reject(err)
+        } else {
+          return resolve(true)
         }
       })
     })

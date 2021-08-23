@@ -17,12 +17,11 @@ class Event extends Database {
                   e.event_name,
                   v.name as vendor_name,
                   e.updated_at as comfirmed_date,
-                  e.status,
                   e.created_at as date_created
                   FROM ${this.table} e 
                   INNER JOIN users c ON c.id = e.company_id
                   INNER JOIN users v ON v.id = e.vendor_id
-                  INNER JOIN date_events de on de.id = e.date_event
+                  INNER JOIN date_events de on de.id_event = e.id
                   ${conditions ? `WHERE ${Object.keys(conditions).map((item, index) => `${item} = '${Object.values(conditions)[index]}'`).join(` ${operator} `)}` : ''};
                 `
 
@@ -57,12 +56,12 @@ class Event extends Database {
   findDateEvent (conditions, operator = '') {
     const sql = `
                   SELECT 
-                  e.id AS id_event,  
-                  e.status,
+                  e.id AS id_event, 
                   de.id AS id_date_event, 
-                  de.date 
+                  de.date,
+                  de.status
                   FROM ${this.table} e
-                  INNER JOIN date_events de ON de.id = e.date_event 
+                  INNER JOIN date_events de on de.id_event = e.id
                   ${conditions && `WHERE ${Object.keys(conditions).map((item, index) => `${item} = '${Object.values(conditions)[index]}'`).join(` ${operator} `)}`}
                 `
 

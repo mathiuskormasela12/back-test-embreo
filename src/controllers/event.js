@@ -17,19 +17,21 @@ exports.createEvent = async (req, res) => {
     }
 
     try {
-      const { insertId, affectedRows } = await dateEvents.buklCreate(req.body.date_event)
+      const data = {
+        event_name: req.body.event_name,
+        vendor_id: req.body.vendor_id,
+        company_id: req.data.id
+      }
 
-      const dateEventsId = [...Array(affectedRows)].map((item, index) => insertId + index)
+      const { id } = await events.create(data)
+      const dateEventsData = {
+        id_event: id,
+        date: req.body.date_event,
+        status: 'pending'
+      }
 
       try {
-        const data = {
-          event_name: req.body.event_name,
-          vendor_id: req.body.vendor_id,
-          company_id: req.data.id,
-          date_event: dateEventsId,
-          status: 'pending'
-        }
-        await events.buklCreate(data)
+        await dateEvents.buklCreate(dateEventsData)
         return response(req, res, 200, true, 'Successfully create new event')
       } catch (err) {
         console.log(err)
@@ -58,11 +60,18 @@ exports.rejectEvent = async (req, res) => {
 
     try {
       await events.update({ id }, '', {
-        status: 'rejected',
         rejection_reason: reason
       })
 
-      return response(req, res, 200, true, 'The event was successfully rejected')
+      try {
+        await dateEvents.update({ id_event: id }, '', {
+          status: 'rejected'
+        })
+        return response(req, res, 200, true, 'The event was successfully rejected')
+      } catch (err) {
+        console.log(err)
+        return response(req, res, 500, false, err.message)
+      }
     } catch (err) {
       console.log(err)
       return response(req, res, 500, false, err.message)
@@ -77,16 +86,19 @@ exports.approveEvent = async (req, res) => {
   const { id } = req.params
 
   try {
-    const isExist = await events.findAll({ id, date_event: req.body.date_event }, 'AND')
+    const isExist = await events.findAllWithRelation({
+      'e.id': id,
+      'de.id': req.body.date_event
+    }, 'AND')
 
     if (isExist.length < 1) {
       return response(req, res, 400, false, 'Unknown event')
     }
 
     try {
-      await events.update({
-        date_event: req.body.date_event,
-        id
+      await dateEvents.update({
+        id: req.body.date_event,
+        id_event: id
       }, 'AND', {
         status: 'approve'
       })
@@ -121,11 +133,9 @@ exports.getAllEvent = async (req, res) => {
 
         const modifiedResults = results.map(item => ({
           ...item,
-          id: undefined,
           status: undefined,
           comfirmed_date: moment(item.comfirmed_date).format('DD MMMM YYYY'),
           date_event: dateEvent.map(date => ({
-            id_event: date.id_event,
             id_date_event: date.id_date_event,
             date: moment(date.date).format('DD MMMM YYYY'),
             status: date.status
@@ -160,11 +170,9 @@ exports.getAllEvent = async (req, res) => {
 
         const modifiedResults = results.map(item => ({
           ...item,
-          id: undefined,
           status: undefined,
           comfirmed_date: moment(item.comfirmed_date).format('DD MMMM YYYY'),
           date_event: dateEvent.map(date => ({
-            id_event: date.id_event,
             id_date_event: date.id_date_event,
             date: moment(date.date).format('DD MMMM YYYY'),
             status: date.status
@@ -202,11 +210,9 @@ exports.getAllEventDetail = async (req, res) => {
 
       const modifiedResults = results.map(item => ({
         ...item,
-        id: undefined,
         status: undefined,
         comfirmed_date: moment(item.comfirmed_date).format('DD MMMM YYYY'),
         date_event: dateEvent.map(date => ({
-          id_event: date.id_event,
           id_date_event: date.id_date_event,
           date: moment(date.date).format('DD MMMM YYYY'),
           status: date.status
